@@ -4,9 +4,8 @@
 #include <string>;
 
 class Piece {
-    protected:
-        std::string colour;
-        bool hasMoved;
+    std::string colour;
+    bool hasMoved;
 
     public:
         // Methods
