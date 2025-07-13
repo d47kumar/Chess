@@ -5,13 +5,21 @@
 
 class Piece {
     std::string colour;
-    bool pin;
+    bool hasMoved;
 
     public:
-        
+        // Methods
         // Count the number of legal moves
-        virtual int legal_moves() = 0;
+        virtual int isValidMove() = 0;
 
+        // Getters and Setters
+        // Colour
+        std::string getColour() const;
+        void setColour(std::string newColour);
+
+        // hasMoved
+        bool getHasMoved() const;
+        void setHasMoved(bool b);
 };
 
 #endif
