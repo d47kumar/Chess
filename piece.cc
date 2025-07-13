@@ -4,9 +4,13 @@ std::string Piece::getColour() const {
     return colour;
 } // Piece::getColour
 
-void Piece::setColour(std::string newColour) {
-    colour = newColour;
-} // Piece::setColour
+Position Piece::getPosition() const {
+    return pos;
+} // Piece::getPosition
+
+void Piece::setPosition(Position newPosition) {
+    pos = newPosition;
+} // Piece::setPosition
 
 bool Piece::getHasMoved() const {
     return hasMoved;
