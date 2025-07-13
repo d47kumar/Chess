@@ -1,8 +1,8 @@
 #include "knight.h"
 
 bool Knight::isValidMove(Position movePosition) const {
-    int row = pos.getRow();
-    int column = pos.getColumn();
+    int row = getPosition().getRow();
+    int column = getPosition().getColumn();
     int newRow = movePosition.getRow();
     int newColumn = movePosition.getColumn();
 
