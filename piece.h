@@ -2,20 +2,25 @@
 #define PIECE_H
 #include <iostream>;
 #include <string>;
+#include "position.h";
 
 class Piece {
     std::string colour;
+    Position pos;
     bool hasMoved;
 
     public:
         // Methods
         // Count the number of legal moves
-        virtual int isValidMove() = 0;
+        virtual bool isValidMove(Position movePosition) const = 0;
 
         // Getters and Setters
         // Colour
         std::string getColour() const;
-        void setColour(std::string newColour);
+
+        // Position
+        Position getPosition() const;
+        void setPosition(Position newPosition);
 
         // hasMoved
         bool getHasMoved() const;
