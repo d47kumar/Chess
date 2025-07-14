@@ -1,6 +1,10 @@
 #include "position.h";
 
+Position::Position(int row, int column, bool occupied) : row{row}, column{column}, occupied{occupied} {};
+
 bool Position::isValid() const {
+    if (occupied) { return false; }
+    
     return (row >= 0) && (row <= 7) && (column >= 0) && (column <= 7);
 } // Position::isValid
 

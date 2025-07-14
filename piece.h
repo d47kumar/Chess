@@ -5,11 +5,15 @@
 #include "position.h";
 
 class Piece {
-    std::string colour;
+    const std::string colour;
     Position pos;
     bool hasMoved;
 
     public:
+
+        // Constructors
+        Piece(const std::string colour, Position pos, bool hasMoved);
+
         // Methods
         // Count the number of legal moves
         virtual bool isValidMove(Position movePosition) const = 0;
