@@ -5,7 +5,6 @@
 class Position {
     int row;
     int column;
-    bool occupied;
 
     public:
 
@@ -18,6 +17,10 @@ class Position {
         // Getters
         int getRow() const;
         int getColumn() const;
+
+        // Setters
+        void setRow(int newRow);
+        void setColumn(int newColumn);
 };
 
 #endif
