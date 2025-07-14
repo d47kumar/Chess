@@ -4,8 +4,6 @@
 
 #include "position.h"
 
-enum class PieceType { None, Queen, Rook, Bishop, Knight }; // For promotion
-
 class Move {
 public:
     Position from;
@@ -13,11 +11,11 @@ public:
     bool isPromotion = false;
     bool isCastling = false;
     bool isEnPassant = false;
-    PieceType promotionPiece = PieceType::None;
+    std::string promotionPiece = "";
 
     Move(Position from, Position to,
          bool isPromotion = false,
-         PieceType promotionPiece = PieceType::None,
+         std::string promotionPiece = "",
          bool isCastling = false,
          bool isEnPassant = false);
 };
