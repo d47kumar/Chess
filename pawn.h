@@ -4,9 +4,9 @@
 
 class Pawn : public Piece {
     public:
-        Pawn(const std::string &colour);
-        int isValidMove() override;
-}
+        Pawn(const std::string colour, Position pos, bool hasMoved);
+        bool isValidMove(Position movePosition) const override;
+};
 
 
 #endif
