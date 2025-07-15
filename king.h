@@ -11,6 +11,9 @@ class King : public Piece {
 
         // Methods
         bool isValidMove(Position movePosition) const override;
+        bool isCheck();
+        bool isKingCheckmate();
+        bool isKingStalemate();
 };
 
 #endif
