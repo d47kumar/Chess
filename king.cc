@@ -18,3 +18,6 @@ bool King::isValidMove(Position movePosition) const {
     return false;
 
 } // King::isValidMove
+
+bool King::isCheck() {} // King::isCheck
+

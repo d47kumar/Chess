@@ -2,6 +2,7 @@
 #define BOARD_H
 #include <iostream>;
 #include <memory>;
+#include <map>
 #include "subject.h";
 #include "piece.h";
 #include "move.h";
@@ -14,7 +15,7 @@
 #include "position.h";
 
 class Board : public Subject {
-    std::unique_ptr<Piece> squares[8][8];
+    std::map<Position, std::unique_ptr<Piece>> squares;
     Position whiteKingPos;
     Position blackKingPos;
 
@@ -33,7 +34,7 @@ class Board : public Subject {
         bool isStalemate(std::string colour);
 
         // Getters and Setters
-        std::string getPiece(Position pos);
+        Piece* getPiece(Position pos) const;
         void setPiece(Position pos, std::unique_ptr<Piece> piece);
 
         // Observer Pattern Methods
