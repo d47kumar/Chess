@@ -9,7 +9,7 @@ class Position {
     public:
 
         // Constructor
-        Position(int row, int column, bool occupied);
+        Position(int row, int column);
 
         // Methods
         bool isValid() const;
