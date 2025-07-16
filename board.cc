@@ -1,6 +1,6 @@
 #include "board.h";
 
-Board::Board() : whiteKingPos(0, 4), blackKingPos(7, 4) {
+Board::Board(bool setup) : whiteKingPos(0, 4), blackKingPos(7, 4), setup{setup} {
     squares.clear();
 
     squares[Position(0, 0)] = std::make_unique<Rook>("BLACK", Position(0, 0), false);
@@ -30,43 +30,6 @@ Board::Board() : whiteKingPos(0, 4), blackKingPos(7, 4) {
 
 Board::~Board() {} // Board::~Board
 
-bool Board::isValidMove(Move move) {
-    Position posFrom = move.getFrom();
-    Position posTo = move.getTo();
-
-    Piece* p = getPiece(posFrom);
-
-    if (!p) {
-        return false;
-    }
-
-    return p->isValidMove(posTo);
-} // Board::isValidMove
-
-bool Board::isInCheck(std::string colour) {
-    Piece* w = getPiece(whiteKingPos);
-    Piece* b = getPiece(blackKingPos);
-    bool check = false;
-    if (colour == "WHITE") {
-        if (King* wk = dynamic_cast<King*>(w)) {
-            check = wk->isCheck();
-        }
-    } else if (colour == "BLACK") {
-        if (King* bk = dynamic_cast<King*>(b)) {
-            check = bk->isCheck();
-        }
-    }
-    return check;
-} // Board::isInCheck
-
-bool Board::isCheckmate(std::string colour) {
-    
-} // Board::isCheckmate
-
-bool Board::isStalemate(std::string colour) {
-    
-} // Board::isStalemate
-
 Piece* Board::getPiece(Position pos) const {
     return squares.at(pos).get();
 } // Board::getPiece
@@ -77,4 +40,3 @@ void Board::setPiece(Position pos, std::unique_ptr<Piece> piece) {
 
     squares[{row, col}] = std::move(piece);
 } // Board::setPiece
-

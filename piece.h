@@ -17,7 +17,6 @@ class Piece {
         // Methods
         // Count the number of legal moves
         virtual bool isValidMove(Position movePosition) const = 0;
-        virtual bool isOccupied(Position movePosition) const = 0;
 
         // Getters and Setters
         // Colour
