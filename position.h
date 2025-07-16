@@ -1,6 +1,8 @@
 #ifndef POSITION_H
 #define POSITION_H
 #include <iostream>;
+#include "board.h";
+#include "piece.h";
 
 class Position {
     int row;
