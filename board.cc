@@ -60,35 +60,11 @@ bool Board::isInCheck(std::string colour) {
 } // Board::isInCheck
 
 bool Board::isCheckmate(std::string colour) {
-    Piece* w = getPiece(whiteKingPos);
-    Piece* b = getPiece(blackKingPos);
-    bool checkmate = false;
-    if (colour == "WHITE") {
-        if (King* wk = dynamic_cast<King*>(w)) {
-            checkmate = wk->isKingCheckmate();
-        }
-    } else if (colour == "BLACK") {
-        if (King* bk = dynamic_cast<King*>(b)) {
-            checkmate = bk->isKingCheckmate();
-        }
-    }
-    return checkmate;
+    
 } // Board::isCheckmate
 
 bool Board::isStalemate(std::string colour) {
-    Piece* w = getPiece(whiteKingPos);
-    Piece* b = getPiece(blackKingPos);
-    bool stalemate = false;
-    if (colour == "WHITE") {
-        if (King* wk = dynamic_cast<King*>(w)) {
-            stalemate = wk->isKingStalemate();
-        }
-    } else if (colour == "BLACK") {
-        if (King* bk = dynamic_cast<King*>(b)) {
-            stalemate = bk->isKingStalemate();
-        }
-    }
-    return stalemate;
+    
 } // Board::isStalemate
 
 Piece* Board::getPiece(Position pos) const {
