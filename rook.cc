@@ -1,5 +1,5 @@
-#include "rook.h";
-#include "piece.h";
+#include "rook.h"
+#include "piece.h"
 
 Rook::Rook(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {}; // Rook::Rook
 

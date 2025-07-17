@@ -1,4 +1,4 @@
-#include "king.h";
+#include "king.h"
 
 King::King(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {}; // King::King
 

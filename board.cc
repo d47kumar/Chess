@@ -1,4 +1,4 @@
-#include "board.h";
+#include "board.h"
 
 Board::Board(bool setup) : whiteKingPos(0, 4), blackKingPos(7, 4), setup{setup} {
     squares.clear();

@@ -1,5 +1,5 @@
-#include "queen.h";
-#include "piece.h";
+#include "queen.h"
+#include "piece.h"
 
 Queen::Queen(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {}
 
