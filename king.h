@@ -1,8 +1,8 @@
 #ifndef KING_H
 #define KING_H
-#include <iostream>;
-#include <cmath>;
-#include "piece.h";
+#include <iostream>
+#include <cmath>
+#include "piece.h"
 
 class King : public Piece {
     public:

@@ -1,5 +1,5 @@
-#include "pawn.h";
-#include "piece.h";
+#include "pawn.h"
+#include "piece.h"
 
 Pawn::Pawn(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {}
 

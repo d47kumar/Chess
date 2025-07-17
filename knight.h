@@ -1,8 +1,8 @@
 #ifndef KNIGHT_H
 #define KNIGHT_H
-#include <iostream>;
-#include <cmath>;
-#include "piece.h";
+#include <iostream>
+#include <cmath>
+#include "piece.h"
 
 class Knight : public Piece {
     public:

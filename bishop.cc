@@ -1,5 +1,5 @@
-#include "bishop.h";
-#include "piece.h";
+#include "bishop.h"
+#include "piece.h"
 
 Bishop::Bishop(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {}
 

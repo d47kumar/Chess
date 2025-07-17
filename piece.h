@@ -1,8 +1,8 @@
 #ifndef PIECE_H
 #define PIECE_H
-#include <iostream>;
-#include <string>;
-#include "position.h";
+#include <iostream>
+#include <string>
+#include "position.h"
 
 class Piece {
     const std::string colour;
