@@ -10,7 +10,7 @@ class King : public Piece {
         King(const std::string colour, Position pos, bool hasMoved);
 
         // Methods
-        bool isValidMove(Position movePosition) const override;
+        bool isValidMove(Position movePosition, Board *board) const override;
 };
 
 #endif

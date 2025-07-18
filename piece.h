@@ -2,6 +2,7 @@
 #define PIECE_H
 #include <iostream>
 #include <string>
+#include "board.h"
 #include "position.h"
 
 class Piece {
@@ -16,7 +17,7 @@ class Piece {
 
         // Methods
         // Count the number of legal moves
-        virtual bool isValidMove(Position movePosition) const = 0;
+        virtual bool isValidMove(Position movePosition, Board *board) const = 0;
 
         // Getters and Setters
         // Colour

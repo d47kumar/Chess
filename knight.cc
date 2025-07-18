@@ -2,7 +2,7 @@
 
 Knight::Knight(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {}; // Knight::Knight
 
-bool Knight::isValidMove(Position movePosition) const {
+bool Knight::isValidMove(Position movePosition, Board *board) const {
     if (!movePosition.isValid()) { return false; }
     int row = getPosition().getRow();
     int column = getPosition().getColumn();

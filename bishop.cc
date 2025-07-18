@@ -3,7 +3,7 @@
 
 Bishop::Bishop(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {}
 
-bool Bishop::isValidMove(Position movePosition) const {
+bool Bishop::isValidMove(Position movePosition, Board *board) const {
     if (!movePosition.isValid()) { return false; }
     int row = getPosition().getRow();
     int column = getPosition().getColumn();
