@@ -15,5 +15,12 @@ bool Knight::isValidMove(Position movePosition, Board *board) const {
     int rowDiff = abs(newRow - row);
     int columnDiff = abs(newColumn - column);
 
-    return (rowDiff == 2 && columnDiff == 1) || (rowDiff == 1 && columnDiff == 2);
+    if (!((rowDiff == 2 && columnDiff == 1) || (rowDiff == 1 && columnDiff == 2))) {
+        return false;
+    }
+    Piece* destPiece = board->getPiece(movePosition);
+    if (destPiece && destPiece->getColour() == getColour()) {
+        return false;
+    }
+    return true;
 } // Knight::isValidMove
