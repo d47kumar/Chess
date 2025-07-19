@@ -18,6 +18,22 @@ public:
          std::string promotionPiece = "",
          bool isCastling = false,
          bool isEnPassant = false);
+
+    // Getters
+    Position getFrom() const;
+    Position getTo() const;
+    bool getIsPromotion() const;
+    std::string getPromotionPiece() const;
+    bool getIsCastling() const;
+    bool getIsEnPassant() const;
+
+    // Setters
+    void setFrom(Position from);
+    void setTo(Position to);
+    void setIsPromotion(bool isPromotion);
+    void setPromotionPiece(std::string promotionPiece);
+    void setIsCastling(bool isCastling);
+    void setIsEnPassant(bool isEnPassant);
 };
 
 #endif
