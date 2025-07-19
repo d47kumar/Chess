@@ -5,24 +5,27 @@ Pawn::Pawn(const std::string colour, Position pos, bool hasMoved) : Piece{colour
 
 bool Pawn::isValidMove(Position movePosition, Board *board) const {
     if (!movePosition.isValid()) { return false; }
+
     int row = getPosition().getRow();
     int column = getPosition().getColumn();
     int newRow = movePosition.getRow();
     int newColumn = movePosition.getColumn();
-    int direction = (getColour() == "white") ? -1 : 1;
 
-    // Move forward one square
+    int direction = (getColour() == "WHITE") ? -1 : 1;
+
     if (newColumn == column && newRow == row + direction) {
-        return true;
+        return board->getPiece(movePosition) == nullptr;
     }
-    // Move forward two squares from starting position
+
     if (!getHasMoved() && newColumn == column && newRow == row + 2 * direction) {
-        return true;
+        return board->getPiece(movePosition) == nullptr && 
+               board->getPiece(Position(row + direction, column)) == nullptr;
     }
-    // Capture diagonally
+
     if (abs(newColumn - column) == 1 && newRow == row + direction) {
-        return true;
+        Piece* target = board->getPiece(movePosition);
+        return target != nullptr && target->getColour() != getColour();
     }
+
     return false;
 }
-
