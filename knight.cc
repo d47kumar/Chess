@@ -1,9 +1,12 @@
 #include "knight.h"
+#include "piece.h"
 
-Knight::Knight(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {}; // Knight::Knight
+Knight::Knight(const std::string colour, Position pos, bool hasMoved) 
+    : Piece{colour, pos, hasMoved} {}
 
 bool Knight::isValidMove(Position movePosition, Board *board) const {
     if (!movePosition.isValid()) { return false; }
+
     int row = getPosition().getRow();
     int column = getPosition().getColumn();
     int newRow = movePosition.getRow();
@@ -12,8 +15,5 @@ bool Knight::isValidMove(Position movePosition, Board *board) const {
     int rowDiff = abs(newRow - row);
     int columnDiff = abs(newColumn - column);
 
-    if (rowDiff == 1) { return (columnDiff == 2); }
-    if (rowDiff == 2) { return (columnDiff == 1); }
-
-    return false;
+    return (rowDiff == 2 && columnDiff == 1) || (rowDiff == 1 && columnDiff == 2);
 } // Knight::isValidMove
