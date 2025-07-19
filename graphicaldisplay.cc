@@ -3,20 +3,20 @@
 GraphicalDisplay::GraphicalDisplay() {
     window = std::make_unique<Xwindow>(windowSize, windowSize);
     board = nullptr;
-}
+} // GraphicalDisplay::GraphicalDisplay
 
-GraphicalDisplay::~GraphicalDisplay() {}
+GraphicalDisplay::~GraphicalDisplay() {} // GraphicalDisplay::~GraphicalDisplay
 
 void GraphicalDisplay::setBoard(Board* b) {
     board = b;
     drawBoard();
-}
+} // GraphicalDisplay::setBoard
 
 void GraphicalDisplay::notify() {
     if (board) {
         drawBoard();
     }
-}
+} // GraphicalDisplay::notify
 
 void GraphicalDisplay::drawBoard() {
     if (!window || !board) return;
@@ -37,12 +37,11 @@ void GraphicalDisplay::drawBoard() {
                 int textX = x + squareSize / 2 - 10;
                 int textY = y + squareSize / 2 + 10;
 
-                int textColour = (piece->getColour() == "WHITE") ? Xwindow::Blue : Xwindow::Red;
-                window->drawString(textX, textY, std::string(1, symbol), textColour);
+                window->drawString(textX, textY, std::string(1, symbol));
             }
         }
     }
-}
+} // GraphicalDisplay::drawBoard
 
 void GraphicalDisplay::drawPiece(char piece, int row, int col) {
     if (!window) return;
@@ -56,13 +55,12 @@ void GraphicalDisplay::drawPiece(char piece, int row, int col) {
     int textX = x + squareSize / 2 - 10;
     int textY = y + squareSize / 2 + 10;
 
-    int textColour = (piece >= 'A' && piece <= 'Z') ? Xwindow::Blue : Xwindow::Red;
-    window->drawString(textX, textY, std::string(1, piece), textColour);
-}
+    window->drawString(textX, textY, std::string(1, piece));
+} // GraphicalDisplay::drawPiece
 
 int GraphicalDisplay::getColour(int row, int col) const {
     return ((row + col) % 2 == 0) ? Xwindow::White : Xwindow::Black;
-}
+} // GraphicalDisplay::getColour
 
 char GraphicalDisplay::getPieceSymbol(Piece* piece) const {
     if (!piece) return ' ';
@@ -77,4 +75,4 @@ char GraphicalDisplay::getPieceSymbol(Piece* piece) const {
     if (dynamic_cast<Pawn*>(piece)) return isWhite ? 'P' : 'p';
 
     return '?';
-}
+} // GraphicalDisplay::getPieceSymbol

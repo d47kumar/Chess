@@ -4,8 +4,6 @@
 #include "board.h"
 #include <iostream>
 #include "window.h"
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
 
 class GraphicalDisplay : public Observer {
     const int windowSize = 500;

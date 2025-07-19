@@ -1,7 +1,7 @@
 #include "pawn.h"
 #include "piece.h"
 
-Pawn::Pawn(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {}
+Pawn::Pawn(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {} // Pawn::Pawn
 
 bool Pawn::isValidMove(Position movePosition, Board *board) const {
     if (!movePosition.isValid()) { return false; }
@@ -28,4 +28,4 @@ bool Pawn::isValidMove(Position movePosition, Board *board) const {
     }
 
     return false;
-}
+} // Pawn::isValidMove

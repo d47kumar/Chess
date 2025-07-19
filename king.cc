@@ -1,6 +1,6 @@
 #include "king.h"
 
-King::King(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {}
+King::King(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {} // King::King
 
 bool King::isValidMove(Position movePosition, Board *board) const {
     if (!movePosition.isValid()) { return false; }
@@ -22,4 +22,4 @@ bool King::isValidMove(Position movePosition, Board *board) const {
     }
 
     return false;
-}
+} // King::isValidMove
