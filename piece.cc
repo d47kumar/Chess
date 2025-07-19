@@ -1,6 +1,6 @@
 #include "piece.h"
 
-Piece::Piece(const std::string colour, Position pos, bool hasMoved) : colour{colour}, pos{pos}, hasMoved{hasMoved} {};
+Piece::Piece(const std::string colour, Position pos, bool hasMoved) : colour{colour}, pos{pos}, hasMoved{hasMoved} {}; // Piece::Piece
 
 std::string Piece::getColour() const {
     return colour;

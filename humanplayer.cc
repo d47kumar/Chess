@@ -2,11 +2,11 @@
 #include <iostream>
 #include <sstream>
 
-HumanPlayer::HumanPlayer(const std::string& colour) : Player{colour} {}
+HumanPlayer::HumanPlayer(const std::string& colour) : Player{colour} {} // HumanPlayer::HumanPlayer
 
 bool HumanPlayer::isHuman() const {
     return true;
-}
+} // HumanPlayer::isHuman()
 
 Position HumanPlayer::parsePosition(const std::string& pos) const {
     if (pos.length() != 2) return Position(-1, -1); // Invalid
@@ -19,7 +19,7 @@ Position HumanPlayer::parsePosition(const std::string& pos) const {
     }
 
     return Position(8 - (row - '0'), col - 'a');
-}
+} // HumanPlayer::parsePosition
 
 Move HumanPlayer::makeMove(Board* board) {
     std::string input;
@@ -55,4 +55,4 @@ Move HumanPlayer::makeMove(Board* board) {
     }
 
     return Move(Position(-1, -1), Position(-1, -1));
-}
+} // HumanPlayer::makeMove

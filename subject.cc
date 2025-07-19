@@ -1,8 +1,11 @@
 #include "subject.h"
 
+Subject::~Subject() {} // Subject::~Subject
+
 void Subject::attach(Observer* o) {
     observers.emplace_back(o);
-}
+} // Subject::attach
+
 
 void Subject::detach(Observer* o) {
     for (auto it = observers.begin(); it != observers.end(); ++it) {
@@ -11,12 +14,10 @@ void Subject::detach(Observer* o) {
             break;
         }
     }
-}
+} // Subject::detach
 
 void Subject::notifyObservers() {
     for (auto& ob : observers) {
         ob->notify();
     }
-}
-
-Subject::~Subject() {}
+} // Subject::notifyObservers

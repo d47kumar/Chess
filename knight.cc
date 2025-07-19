@@ -2,7 +2,7 @@
 #include "piece.h"
 
 Knight::Knight(const std::string colour, Position pos, bool hasMoved) 
-    : Piece{colour, pos, hasMoved} {}
+    : Piece{colour, pos, hasMoved} {} // Knight::Knight
 
 bool Knight::isValidMove(Position movePosition, Board *board) const {
     if (!movePosition.isValid()) { return false; }

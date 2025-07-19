@@ -26,7 +26,7 @@ Board::Board(bool setup) : whiteKingPos(0, 4), blackKingPos(7, 4), setup{setup} 
     for (int j = 0; j < 8; ++j) {
         squares[Position(6, j)] = std::make_unique<Pawn>("WHITE", Position(6, j), false);
     }
-}
+} // Board::Board
 
 Board::~Board() {} // Board::~Board
 

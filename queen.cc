@@ -1,7 +1,7 @@
 #include "queen.h"
 #include "piece.h"
 
-Queen::Queen(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {}
+Queen::Queen(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {} // Queen::Queen
 
 bool Queen::isValidMove(Position movePosition, Board *board) const {
     if (!movePosition.isValid()) { return false; }
@@ -19,4 +19,4 @@ bool Queen::isValidMove(Position movePosition, Board *board) const {
         return true;
     }
     return false;
-}
+} // Queen::isValidMove

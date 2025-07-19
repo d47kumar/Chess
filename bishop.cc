@@ -1,7 +1,7 @@
 #include "bishop.h"
 #include "piece.h"
 
-Bishop::Bishop(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {}
+Bishop::Bishop(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {} // Bishop::Bishop
 
 bool Bishop::isValidMove(Position movePosition, Board *board) const {
     if (!movePosition.isValid()) { return false; }
@@ -15,4 +15,4 @@ bool Bishop::isValidMove(Position movePosition, Board *board) const {
         return true;
     }
     return false;
-} 
+} // Bishop::isValidMove
