@@ -24,7 +24,6 @@ class Board : public Subject {
 
     // Helper methods
     bool wouldBeInCheck(const std::string& colour, Move testMove) const;
-    std::vector<Move> getAllPossibleMoves(const std::string& colour) const;
     std::unique_ptr<Piece> createPiece(char pieceSymbol, Position pos, bool hasMoved) const;
     
     public: 

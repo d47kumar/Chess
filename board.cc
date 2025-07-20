@@ -37,6 +37,8 @@ std::unique_ptr<Piece> Board::createPiece(char pieceSymbol, Position pos, bool h
     }
 } // Board::createPiece
 
+// Public Methods
+
 Board::Board(bool setup) : whiteKingPos(7, 4), blackKingPos(0, 4), setup{setup}, 
                            lastMove(Position(-1, -1), Position(-1, -1)) {
     if (!setup) {
@@ -445,5 +447,3 @@ std::ostream& operator<<(std::ostream& out, const Board& board) {
     out << "  abcdefgh" << std::endl;
     return out;
 } // ostream& operator<<
-
-
