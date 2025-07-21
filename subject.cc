@@ -18,6 +18,6 @@ void Subject::detach(Observer* o) {
 
 void Subject::notifyObservers() {
     for (auto& ob : observers) {
-        ob->notify();
+        ob->notify();      // HUMARA OBSERVOR ME UPDATE JAAYEGA YA NOTIFY
     }
 } // Subject::notifyObservers
