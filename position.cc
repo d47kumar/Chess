@@ -1,6 +1,6 @@
 #include "position.h"
 
-Position::Position(int row, int column) : row{row}, column{column} {} // Position::Position
+Position::Position(int row = -1, int column = -1) : row{row}, column{column} {} // Position::Position
 
 bool Position::isValid() const {
     return (row >= 0) && (row <= 7) && (column >= 0) && (column <= 7); // Position::isValid
