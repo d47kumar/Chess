@@ -11,7 +11,7 @@ class Xwindow {
   GC gc;
   unsigned long colours[5];
 
- public:
+  public:
   Xwindow(int width=500, int height=500);  
   ~Xwindow();                            
 
