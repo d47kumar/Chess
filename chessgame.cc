@@ -70,7 +70,6 @@ bool ChessGame::move(const std::string& from, const std::string& to, const std::
     moveHistory.push_back(move);
     updateGameState();
     switchPlayer();
-    if (textDisplay) textDisplay->notify();
     // if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
@@ -85,7 +84,6 @@ bool ChessGame::move() {
     moveHistory.push_back(move);
     updateGameState();
     switchPlayer();
-    if (textDisplay) textDisplay->notify();
     // if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
@@ -132,7 +130,6 @@ bool ChessGame::addPiece(const std::string& piece, const std::string& position) 
     std::unique_ptr<Piece> newPiece = board->createPiece(symbol, pos, false);
     if (!newPiece) return false;
     board->setPiece(pos, std::move(newPiece));
-    if (textDisplay) textDisplay->notify();
     // if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
@@ -142,7 +139,6 @@ bool ChessGame::removePiece(const std::string& position) {
     Position pos = parsePosition(position);
     if (!pos.isValid()) return false;
     board->removePiece(pos);
-    if (textDisplay) textDisplay->notify();
     // if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
