@@ -4,7 +4,7 @@
 bool Board::wouldBeInCheck(const std::string& colour, Move testMove) const {
     Board tempBoard = *this;
     
-    std::unique_ptr<Piece> movingPiece = std::move(tempBoard.squares[testMove.from]);
+    std::unique_ptr<Piece> movingPiece = std::move(tempBoard.squares[testMove.getFrom()]);
     tempBoard.squares.erase(testMove.getFrom());
     
     if (movingPiece) {
@@ -447,3 +447,33 @@ std::ostream& operator<<(std::ostream& out, const Board& board) {
     out << "  abcdefgh" << std::endl;
     return out;
 } // ostream& operator<<
+
+// Copy constructor
+Board::Board(const Board& other)
+    : whiteKingPos(other.whiteKingPos),
+      blackKingPos(other.blackKingPos),
+      setup(other.setup),
+      lastMove(other.lastMove)
+{
+    for (const auto& [pos, piecePtr] : other.squares) {
+        if (piecePtr) {
+            squares[pos] = piecePtr->clone();
+        }
+    }
+}
+
+// Copy assignment operator
+Board& Board::operator=(const Board& other) {
+    if (this == &other) return *this;
+    whiteKingPos = other.whiteKingPos;
+    blackKingPos = other.blackKingPos;
+    setup = other.setup;
+    lastMove = other.lastMove;
+    squares.clear();
+    for (const auto& [pos, piecePtr] : other.squares) {
+        if (piecePtr) {
+            squares[pos] = piecePtr->clone();
+        }
+    }
+    return *this;
+}

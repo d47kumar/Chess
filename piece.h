@@ -19,6 +19,7 @@ class Piece {
         // Methods
         // Count the number of legal moves
         virtual bool isValidMove(Position movePosition, Board *board) const = 0;
+        virtual std::unique_ptr<Piece> clone() const = 0;
 
         // Getters and Setters
         // Colour

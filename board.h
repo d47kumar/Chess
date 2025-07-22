@@ -4,6 +4,13 @@
 #include <memory> 
 #include <map> 
 #include <vector>
+#include "piece.h"
+#include "king.h"
+#include "queen.h"
+#include "rook.h"
+#include "bishop.h"
+#include "knight.h"
+#include "pawn.h"
 #include "subject.h"
 #include "move.h" 
 #include "position.h" 
@@ -34,6 +41,10 @@ class Board : public Subject {
         
         // Destructor 
         ~Board(); 
+        
+        // Copy constructor and assignment
+        Board(const Board& other); // Copy constructor
+        Board& operator=(const Board& other); // Copy assignment
         
         // Existing methods
         Piece* getPiece(Position pos) const; 

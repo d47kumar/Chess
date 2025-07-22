@@ -23,3 +23,7 @@ bool Piece::isValidMove(Position movePosition, Board *board) const {
 
     return false;
 } // King::isValidMove
+
+std::unique_ptr<Piece> King::clone() const {
+    return std::make_unique<King>(*this);
+} // King::clone
