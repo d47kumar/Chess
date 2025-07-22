@@ -25,15 +25,21 @@ bool Board::wouldBeInCheck(const std::string& colour, Move testMove) const {
 std::unique_ptr<Piece> Board::createPiece(char pieceSymbol, Position pos, bool hasMoved) const {
     std::string colour = (pieceSymbol >= 'A' && pieceSymbol <= 'Z') ? "WHITE" : "BLACK";
     char upperSymbol = std::toupper(pieceSymbol);
-    
-    switch (upperSymbol) {
-        case 'K': return std::make_unique<King>(colour, pos, hasMoved);
-        case 'Q': return std::make_unique<Queen>(colour, pos, hasMoved);
-        case 'R': return std::make_unique<Rook>(colour, pos, hasMoved);
-        case 'B': return std::make_unique<Bishop>(colour, pos, hasMoved);
-        case 'N': return std::make_unique<Knight>(colour, pos, hasMoved);
-        case 'P': return std::make_unique<Pawn>(colour, pos, hasMoved);
-        default: return nullptr;
+
+    if (upperSymbol == 'K') {
+        return std::make_unique<King>(colour, pos, hasMoved);
+    } else if (upperSymbol == 'Q') {
+        return std::make_unique<Queen>(colour, pos, hasMoved);
+    } else if (upperSymbol == 'R') {
+        return std::make_unique<Rook>(colour, pos, hasMoved);
+    } else if (upperSymbol == 'B') {
+        return std::make_unique<Bishop>(colour, pos, hasMoved);
+    } else if (upperSymbol == 'N') {
+        return std::make_unique<Knight>(colour, pos, hasMoved);
+    } else if (upperSymbol == 'P') {
+        return std::make_unique<Pawn>(colour, pos, hasMoved);
+    } else {
+        return nullptr;
     }
 } // Board::createPiece
 

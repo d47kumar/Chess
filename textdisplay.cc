@@ -8,7 +8,11 @@ TextDisplay::~TextDisplay() {}
 
 void TextDisplay::setBoard(Board* b) {
     board = b;
-    printBoard();
+    if (board) {
+        board->attach(this);
+    } else {
+        std::cerr << "Error: Board is null!" << std::endl;
+    }
 }
 
 void TextDisplay::notify() {
@@ -20,7 +24,7 @@ void TextDisplay::notify() {
 void TextDisplay::printBoard() const {
     if (!board) return;
 
-    std::cout << std::endl;
+    std::cout << "Drawing Board..." << std::endl;
 
     // Print board from rank 8 to rank 1
     for (int row = 0; row < 8; ++row) {

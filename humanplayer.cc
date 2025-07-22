@@ -9,13 +9,13 @@ bool HumanPlayer::isHuman() const {
 } // HumanPlayer::isHuman()
 
 Position HumanPlayer::parsePosition(const std::string& pos) const {
-    if (pos.length() != 2) return Position(-1, -1); // Invalid
+    if (pos.length() != 2) return Position(-1, -1); 
 
     char col = pos[0];
     char row = pos[1];
 
     if (col < 'a' || col > 'h' || row < '1' || row > '8') {
-        return Position(-1, -1); // Invalid
+        return Position(-1, -1); 
     }
 
     return Position(8 - (row - '0'), col - 'a');
