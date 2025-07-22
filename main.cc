@@ -13,7 +13,7 @@ int main() {
     std::unique_ptr<TextDisplay> textDisplay = std::make_unique<TextDisplay>();
     chessGame.attachDisplay(textDisplay.get());
 
-    std::unique_ptr<GraphicsDisplay> graphicsDisplay = std::make_unique<GraphicsDisplay>();
+    std::unique_ptr<GraphicalDisplay> graphicsDisplay = std::make_unique<GraphicalDisplay>();
     chessGame.attachDisplay(graphicsDisplay.get());
 
     std::string input;

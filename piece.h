@@ -2,6 +2,7 @@
 #define PIECE_H
 #include <iostream>
 #include <string>
+#include <memory>
 #include "position.h"
 
 class Board;

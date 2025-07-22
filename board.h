@@ -33,7 +33,6 @@ class Board : public Subject {
 
     // Helper methods
     bool wouldBeInCheck(const std::string& colour, Move testMove) const;
-    std::unique_ptr<Piece> createPiece(char pieceSymbol, Position pos, bool hasMoved) const;
     
     public: 
         // Constructor 
@@ -50,7 +49,8 @@ class Board : public Subject {
         Piece* getPiece(Position pos) const; 
         void setPiece(Position pos, std::unique_ptr<Piece> piece); 
         void removePiece(Position pos);
-        
+        std::unique_ptr<Piece> createPiece(char pieceSymbol, Position pos, bool hasMoved) const;
+
         // Game logic methods
         bool isValidMove(Position from, Position to, const std::string& colour) const;
         bool isPathClear(Position from, Position to) const;
