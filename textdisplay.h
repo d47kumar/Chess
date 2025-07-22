@@ -1,17 +1,23 @@
 #ifndef TEXTDISPLAY_H
 #define TEXTDISPLAY_H
-
 #include "observer.h"
 #include "board.h"
 #include <iostream>
 
 class TextDisplay : public Observer {
-    Board* board; // pointer to the game board
+    Board* board;
 
 public:
-    TextDisplay(Board* b);
+    TextDisplay();
+    ~TextDisplay();
+
+    void setBoard(Board* b);
     void notify() override;
-    void display() const;
+    void printBoard() const;
+
+private:
+    char getPieceSymbol(Piece* piece) const;
+    char getSquareDisplay(int row, int col) const;
 };
 
 #endif

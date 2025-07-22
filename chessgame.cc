@@ -1,68 +1,239 @@
 #include "chessgame.h"
-#include "humanplayer.h"
-#include "player.h"
 #include <iostream>
+#include <cctype>
+#include <algorithm>
 
+// Constructor
 ChessGame::ChessGame()
-    : currentPlayer(nullptr), board(nullptr), whitePlayer(nullptr), blackPlayer(nullptr), gameState(GameState::NotStarted) {}
+    : board(std::make_unique<Board>(false)),
+      whitePlayer(nullptr),
+      blackPlayer(nullptr),
+      textDisplay(nullptr),
+      graphicalDisplay(nullptr),
+      currentPlayer("WHITE"),
+      gameState(GameState::NOT_STARTED),
+      gameRunning(false),
+      setupMode(false),
+      whiteScore(0.0),
+      blackScore(0.0) {}
 
-ChessGame::~ChessGame() {
-    delete board;
-    delete whitePlayer;
-    delete blackPlayer;
+// Destructor
+ChessGame::~ChessGame() = default;
+
+// Game control
+bool ChessGame::startGame(const std::string& white, const std::string& black) {
+    if (gameRunning) return false;
+    whitePlayer = createPlayer(white, "WHITE");
+    blackPlayer = createPlayer(black, "BLACK");
+    if (!whitePlayer || !blackPlayer) return false;
+    board = std::make_unique<Board>(false);
+    currentPlayer = "WHITE";
+    gameState = GameState::PLAYING;
+    gameRunning = true;
+    setupMode = false;
+    moveHistory.clear();
+    if (textDisplay) textDisplay->notify();
+    if (graphicalDisplay) graphicalDisplay->notify();
+    return true;
 }
 
-void ChessGame::startGame(const std::string& whiteType, const std::string& blackType) {
-    // Clean up previous game if any
-    delete board;
-    delete whitePlayer;
-    delete blackPlayer;
-    board = new Board(false); // Not in setup mode
-    board->setupStandardPosition();
-    // For now, only human players are supported
-    whitePlayer = new HumanPlayer("white");
-    blackPlayer = new HumanPlayer("black");
-    currentPlayer = whitePlayer;
-    gameState = GameState::InProgress;
+void ChessGame::endGame() {
+    gameRunning = false;
+    gameState = GameState::NOT_STARTED;
+    whitePlayer.reset();
+    blackPlayer.reset();
     moveHistory.clear();
 }
 
-bool ChessGame::makeMove(const Move& move) {
-    if (gameState != GameState::InProgress) return false;
-    if (!board->makeMove(move)) return false;
-    moveHistory.push_back(move);
-    // Switch player
-    currentPlayer = (currentPlayer == whitePlayer) ? blackPlayer : whitePlayer;
-    // Check for game end
-    if (board->isCheckmate(currentPlayer->getColour())) {
-        gameState = GameState::Checkmate;
-    } else if (board->isStalemate(currentPlayer->getColour())) {
-        gameState = GameState::Stalemate;
+bool ChessGame::isGameRunning() const {
+    return gameRunning;
+}
+
+// Move handling
+bool ChessGame::move(const std::string& from, const std::string& to, const std::string& promotion) {
+    if (!gameRunning || setupMode) return false;
+    Position fromPos = parsePosition(from);
+    Position toPos = parsePosition(to);
+    if (!fromPos.isValid() || !toPos.isValid()) return false;
+    Move move(fromPos, toPos);
+    if (!promotion.empty()) {
+        move.setIsPromotion(true);
+        move.setPromotionPiece(promotion);
     }
+    if (!isValidMove(move)) return false;
+    if (!makeMove(move)) return false;
+    moveHistory.push_back(move);
+    updateGameState();
+    switchPlayer();
+    if (textDisplay) textDisplay->notify();
+    if (graphicalDisplay) graphicalDisplay->notify();
+    return true;
+}
+
+bool ChessGame::move() {
+    if (!gameRunning || setupMode) return false;
+    Player* player = (currentPlayer == "WHITE") ? whitePlayer.get() : blackPlayer.get();
+    if (!player) return false;
+    Move move = player->makeMove(board.get());
+    if (!isValidMove(move)) return false;
+    if (!makeMove(move)) return false;
+    moveHistory.push_back(move);
+    updateGameState();
+    switchPlayer();
+    if (textDisplay) textDisplay->notify();
+    if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
 
 void ChessGame::resign() {
-    if (gameState != GameState::InProgress) return;
-    gameState = GameState::Resigned;
+    if (!gameRunning) return;
+    gameState = GameState::RESIGNED;
+    if (currentPlayer == "WHITE") {
+        blackScore += 1.0;
+        std::cout << "Black wins by resignation!" << std::endl;
+    } else {
+        whiteScore += 1.0;
+        std::cout << "White wins by resignation!" << std::endl;
+    }
+    endGame();
 }
 
-bool ChessGame::isGameOver() const {
-    return gameState == GameState::Checkmate || gameState == GameState::Stalemate || gameState == GameState::Resigned;
+// Setup mode
+void ChessGame::enterSetupMode() {
+    setupMode = true;
+    gameRunning = false;
+    board = std::make_unique<Board>(true);
+    if (textDisplay) textDisplay->notify();
+    if (graphicalDisplay) graphicalDisplay->notify();
 }
 
-ChessGame::GameState ChessGame::getGameState() const {
+void ChessGame::exitSetupMode() {
+    setupMode = false;
+    if (isValidSetup()) {
+        gameRunning = true;
+        gameState = GameState::PLAYING;
+    }
+}
+
+bool ChessGame::addPiece(const std::string& piece, const std::string& position) {
+    if (!setupMode) return false;
+    if (piece.empty() || position.empty()) return false;
+    char symbol = piece[0];
+    Position pos = parsePosition(position);
+    if (!pos.isValid()) return false;
+    bool isWhite = std::isupper(symbol);
+    std::string colour = isWhite ? "WHITE" : "BLACK";
+    std::unique_ptr<Piece> newPiece = board->createPiece(symbol, pos, false);
+    if (!newPiece) return false;
+    board->setPiece(pos, std::move(newPiece));
+    if (textDisplay) textDisplay->notify();
+    if (graphicalDisplay) graphicalDisplay->notify();
+    return true;
+}
+
+bool ChessGame::removePiece(const std::string& position) {
+    if (!setupMode) return false;
+    Position pos = parsePosition(position);
+    if (!pos.isValid()) return false;
+    board->removePiece(pos);
+    if (textDisplay) textDisplay->notify();
+    if (graphicalDisplay) graphicalDisplay->notify();
+    return true;
+}
+
+void ChessGame::setTurn(const std::string& colour) {
+    if (!setupMode) return;
+    std::string col = colour;
+    std::transform(col.begin(), col.end(), col.begin(), ::toupper);
+    if (col == "WHITE" || col == "BLACK") {
+        currentPlayer = col;
+    }
+}
+
+// Display management
+void ChessGame::attachDisplay(TextDisplay* display) {
+    textDisplay.reset(display);
+    if (textDisplay) textDisplay->notify();
+}
+
+void ChessGame::attachDisplay(GraphicalDisplay* display) {
+    graphicalDisplay.reset(display);
+    if (graphicalDisplay) graphicalDisplay->notify();
+}
+
+// Game state
+GameState ChessGame::getGameState() const {
     return gameState;
 }
 
-Player* ChessGame::getCurrentPlayer() const {
+std::string ChessGame::getCurrentPlayer() const {
     return currentPlayer;
 }
 
-Board* ChessGame::getBoard() const {
-    return board;
+void ChessGame::printFinalScores() const {
+    std::cout << "Final Scores:" << std::endl;
+    std::cout << "White: " << whiteScore << std::endl;
+    std::cout << "Black: " << blackScore << std::endl;
 }
 
-const std::vector<Move>& ChessGame::getMoveHistory() const {
-    return moveHistory;
+// Private helper methods
+std::unique_ptr<Player> ChessGame::createPlayer(const std::string& playerType, const std::string& colour) {
+    if (playerType == "human") {
+        return std::make_unique<HumanPlayer>(colour);
+    }
+    // Add computer player creation here if needed
+    return nullptr;
+}
+
+Position ChessGame::parsePosition(const std::string& pos) const {
+    if (pos.length() != 2) return Position(-1, -1);
+    char file = std::tolower(pos[0]);
+    char rank = pos[1];
+    if (file < 'a' || file > 'h' || rank < '1' || rank > '8') return Position(-1, -1);
+    int row = 8 - (rank - '0');
+    int col = file - 'a';
+    return Position(row, col);
+}
+
+bool ChessGame::isValidSetup() const {
+    return board->isValidSetup();
+}
+
+void ChessGame::updateGameState() {
+    if (board->isCheckmate(currentPlayer)) {
+        gameState = GameState::CHECKMATE;
+        if (currentPlayer == "WHITE") blackScore += 1.0;
+        else whiteScore += 1.0;
+        std::cout << (currentPlayer == "WHITE" ? "Black" : "White") << " wins by checkmate!" << std::endl;
+        endGame();
+    } else if (board->isStalemate(currentPlayer)) {
+        gameState = GameState::STALEMATE;
+        whiteScore += 0.5;
+        blackScore += 0.5;
+        std::cout << "Stalemate!" << std::endl;
+        endGame();
+    } else if (board->isInCheck(currentPlayer)) {
+        gameState = GameState::CHECK;
+        std::cout << currentPlayer << " is in check." << std::endl;
+    } else {
+        gameState = GameState::PLAYING;
+    }
+}
+
+void ChessGame::switchPlayer() {
+    currentPlayer = (currentPlayer == "WHITE") ? "BLACK" : "WHITE";
+}
+
+void ChessGame::updateScores() {
+    // Already handled in updateGameState
+}
+
+bool ChessGame::isValidMove(const Move& move) const {
+    Piece* piece = board->getPiece(move.from);
+    if (!piece || piece->getColour() != currentPlayer) return false;
+    return board->isValidMove(move.from, move.to, currentPlayer);
+}
+
+bool ChessGame::makeMove(const Move& move) {
+    return board->makeMove(move);
 }
