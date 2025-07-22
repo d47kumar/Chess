@@ -33,3 +33,7 @@ bool Bishop::isValidMove(Position movePosition, Board *board) const {
     }
     return true;
 } // Bishop::isValidMove
+
+std::unique_ptr<Piece> Bishop::clone() const {
+    return std::make_unique<Bishop>(*this);
+} // Bishop::clone

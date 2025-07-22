@@ -31,3 +31,7 @@ bool Pawn::isValidMove(Position movePosition, Board *board) const {
     // TODO: en passant logic andf promotion piece check 
     return false;
 } // Pawn::isValidMove
+
+std::unique_ptr<Piece> Pawn::clone() const {
+    return std::make_unique<Pawn>(*this);
+} // Pawn::clone

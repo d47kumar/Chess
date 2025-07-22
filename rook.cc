@@ -32,3 +32,7 @@ bool Piece::isValidMove(Position movePosition, Board *board) const {
     }
     return true;
 } // Rook::isValidMove
+
+std::unique_ptr<Piece> Rook::clone() const {
+    return std::make_unique<Rook>(*this);
+} // Rook::clone
