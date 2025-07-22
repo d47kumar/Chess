@@ -11,7 +11,6 @@ class TextDisplay : public Observer {
 public:
     TextDisplay(Board* b);
     void notify() override;
-    void showMessage(std::string& message) override;
     void display() const;
 };
 

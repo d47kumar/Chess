@@ -11,12 +11,8 @@
 
 TextDisplay::TextDisplay(Board* b) : board(b) {}
 
-TextDisplay::notify() {
+void TextDisplay::notify() {
     display();
-}
-
-void TextDisplay::showMessage(const std::string& message) const {
-    std::cout << message << std::endl;
 }
 
 void TextDisplay::display() const {
