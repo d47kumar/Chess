@@ -5,22 +5,24 @@
 #include <map> 
 #include <vector>
 #include "subject.h"
-#include "piece.h" 
 #include "move.h" 
-#include "king.h" 
-#include "queen.h" 
-#include "bishop.h" 
-#include "knight.h" 
-#include "rook.h" 
-#include "pawn.h" 
 #include "position.h" 
+
+// Forward declarations for all piece types
+class Piece;
+class King;
+class Queen;
+class Bishop;
+class Knight;
+class Rook;
+class Pawn;
 
 class Board : public Subject { 
     std::map<Position, std::unique_ptr<Piece>> squares; 
     Position whiteKingPos; 
     Position blackKingPos; 
     bool setup;
-    Move lastMove; // Track for en passant
+    Move lastMove;
 
     // Helper methods
     bool wouldBeInCheck(const std::string& colour, Move testMove) const;

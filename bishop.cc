@@ -1,5 +1,4 @@
 #include "bishop.h"
-#include "piece.h"
 
 Bishop::Bishop(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {} // Bishop::Bishop
 
@@ -13,8 +12,8 @@ bool Bishop::isValidMove(Position movePosition, Board *board) const {
     int rowDiff = abs(newRow - row);
     int columnDiff = abs(newColumn - column);
 
-    // Not a bishop move
-    if (rowDiff != columnDiff) {
+    // Not a bishop move or no move at all
+    if (rowDiff != columnDiff || rowDiff == 0) {
         return false;
     }
 

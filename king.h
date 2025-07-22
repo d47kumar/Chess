@@ -3,6 +3,9 @@
 #include <iostream>
 #include <cmath>
 #include "piece.h"
+#include "board.h"
+
+class Board;
 
 class King : public Piece {
     public:
