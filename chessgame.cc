@@ -9,7 +9,7 @@ ChessGame::ChessGame()
       whitePlayer(nullptr),
       blackPlayer(nullptr),
       textDisplay(nullptr),
-      graphicalDisplay(nullptr),
+      // graphicalDisplay(nullptr),
       currentPlayer("WHITE"),
       gameState(GameState::NOT_STARTED),
       gameRunning(false),
@@ -23,9 +23,11 @@ ChessGame::~ChessGame() = default;
 // Game control
 bool ChessGame::startGame(const std::string& white, const std::string& black) {
     if (gameRunning) return false;
+    std::cout << "Starting game with players: " << white << " (White) vs " << black << " (Black)" << std::endl;
     whitePlayer = createPlayer(white, "WHITE");
     blackPlayer = createPlayer(black, "BLACK");
     if (!whitePlayer || !blackPlayer) return false;
+    std::cout << "Game started!" << std::endl;
     board = std::make_unique<Board>(false);
     currentPlayer = "WHITE";
     gameState = GameState::PLAYING;
@@ -33,7 +35,7 @@ bool ChessGame::startGame(const std::string& white, const std::string& black) {
     setupMode = false;
     moveHistory.clear();
     if (textDisplay) textDisplay->notify();
-    if (graphicalDisplay) graphicalDisplay->notify();
+    // if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
 
@@ -52,6 +54,7 @@ bool ChessGame::isGameRunning() const {
 // Move handling
 bool ChessGame::move(const std::string& from, const std::string& to, const std::string& promotion) {
     if (!gameRunning || setupMode) return false;
+    std::cout << "Moving piece from " << from << " to " << to << std::endl;
     Position fromPos = parsePosition(from);
     Position toPos = parsePosition(to);
     if (!fromPos.isValid() || !toPos.isValid()) return false;
@@ -59,6 +62,7 @@ bool ChessGame::move(const std::string& from, const std::string& to, const std::
     if (!promotion.empty()) {
         move.setIsPromotion(true);
         move.setPromotionPiece(promotion);
+        std::cout << "Promotion to " << promotion << std::endl;
     }
     if (!isValidMove(move)) return false;
     if (!makeMove(move)) return false;
@@ -66,7 +70,7 @@ bool ChessGame::move(const std::string& from, const std::string& to, const std::
     updateGameState();
     switchPlayer();
     if (textDisplay) textDisplay->notify();
-    if (graphicalDisplay) graphicalDisplay->notify();
+    // if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
 
@@ -81,7 +85,7 @@ bool ChessGame::move() {
     updateGameState();
     switchPlayer();
     if (textDisplay) textDisplay->notify();
-    if (graphicalDisplay) graphicalDisplay->notify();
+    // if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
 
@@ -104,7 +108,7 @@ void ChessGame::enterSetupMode() {
     gameRunning = false;
     board = std::make_unique<Board>(true);
     if (textDisplay) textDisplay->notify();
-    if (graphicalDisplay) graphicalDisplay->notify();
+    // if (graphicalDisplay) graphicalDisplay->notify();
 }
 
 void ChessGame::exitSetupMode() {
@@ -127,7 +131,7 @@ bool ChessGame::addPiece(const std::string& piece, const std::string& position) 
     if (!newPiece) return false;
     board->setPiece(pos, std::move(newPiece));
     if (textDisplay) textDisplay->notify();
-    if (graphicalDisplay) graphicalDisplay->notify();
+    // if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
 
@@ -137,7 +141,7 @@ bool ChessGame::removePiece(const std::string& position) {
     if (!pos.isValid()) return false;
     board->removePiece(pos);
     if (textDisplay) textDisplay->notify();
-    if (graphicalDisplay) graphicalDisplay->notify();
+    // if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
 
@@ -153,12 +157,13 @@ void ChessGame::setTurn(const std::string& colour) {
 // Display management
 void ChessGame::attachDisplay(TextDisplay* display) {
     textDisplay.reset(display);
+    textDisplay->setBoard(board.get());
     if (textDisplay) textDisplay->notify();
 }
 
 void ChessGame::attachDisplay(GraphicalDisplay* display) {
-    graphicalDisplay.reset(display);
-    if (graphicalDisplay) graphicalDisplay->notify();
+    // graphicalDisplay.reset(display);
+    // if (graphicalDisplay) graphicalDisplay->notify();
 }
 
 // Game state
@@ -181,7 +186,23 @@ std::unique_ptr<Player> ChessGame::createPlayer(const std::string& playerType, c
     if (playerType == "human") {
         return std::make_unique<HumanPlayer>(colour);
     }
-    // Add computer player creation here if needed
+    
+    if (playerType == "computer[1]") {
+        return std::make_unique<ComputerPlayer>(colour, 1);
+    }
+
+    if (playerType == "computer[2]") {
+        return std::make_unique<ComputerPlayer>(colour, 2);
+    }
+
+    if (playerType == "computer[3]") {
+        return std::make_unique<ComputerPlayer>(colour, 3);
+    }
+
+    if (playerType == "computer[4]") {
+        return std::make_unique<ComputerPlayer>(colour, 4);
+    }
+    
     return nullptr;
 }
 
@@ -229,9 +250,9 @@ void ChessGame::updateScores() {
 }
 
 bool ChessGame::isValidMove(const Move& move) const {
-    Piece* piece = board->getPiece(move.from);
+    Piece* piece = board->getPiece(move.getFrom());
     if (!piece || piece->getColour() != currentPlayer) return false;
-    return board->isValidMove(move.from, move.to, currentPlayer);
+    return board->isValidMove(move.getFrom(), move.getTo(), currentPlayer);
 }
 
 bool ChessGame::makeMove(const Move& move) {

@@ -5,6 +5,7 @@
 #include "board.h"
 #include "player.h"
 #include "humanplayer.h"
+#include "computerplayer.h"
 #include "textdisplay.h"
 #include "graphicaldisplay.h"
 #include "move.h"
