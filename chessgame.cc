@@ -34,6 +34,7 @@ bool ChessGame::startGame(const std::string& white, const std::string& black) {
     gameRunning = true;
     setupMode = false;
     moveHistory.clear();
+    textDisplay->setBoard(board.get());
     if (textDisplay) textDisplay->notify();
     // if (graphicalDisplay) graphicalDisplay->notify();
     return true;
@@ -158,7 +159,6 @@ void ChessGame::setTurn(const std::string& colour) {
 void ChessGame::attachDisplay(TextDisplay* display) {
     textDisplay.reset(display);
     textDisplay->setBoard(board.get());
-    if (textDisplay) textDisplay->notify();
 }
 
 void ChessGame::attachDisplay(GraphicalDisplay* display) {
