@@ -108,6 +108,7 @@ void ChessGame::enterSetupMode() {
     setupMode = true;
     gameRunning = false;
     board = std::make_unique<Board>(true);
+    textDisplay->setBoard(board.get());
     if (textDisplay) textDisplay->notify();
     // if (graphicalDisplay) graphicalDisplay->notify();
 }
