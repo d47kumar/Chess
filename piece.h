@@ -2,8 +2,9 @@
 #define PIECE_H
 #include <iostream>
 #include <string>
-#include "board.h"
 #include "position.h"
+
+class Board;
 
 class Piece {
     const std::string colour;

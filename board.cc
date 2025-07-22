@@ -5,10 +5,10 @@ bool Board::wouldBeInCheck(const std::string& colour, Move testMove) const {
     Board tempBoard = *this;
     
     std::unique_ptr<Piece> movingPiece = std::move(tempBoard.squares[testMove.from]);
-    tempBoard.squares.erase(testMove.from);
+    tempBoard.squares.erase(testMove.getFrom());
     
     if (movingPiece) {
-        movingPiece->setPosition(testMove.to);
+        movingPiece->setPosition(testMove.getTo());
         
         if (dynamic_cast<King*>(movingPiece.get())) {
             tempBoard.updateKingPosition(colour, testMove.to);

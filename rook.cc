@@ -1,9 +1,8 @@
 #include "rook.h"
-#include "piece.h"
 
 Rook::Rook(const std::string colour, Position pos, bool hasMoved) : Piece{colour, pos, hasMoved} {}; // Rook::Rook
 
-bool Rook::isValidMove(Position movePosition, Board *board) const {
+bool Piece::isValidMove(Position movePosition, Board *board) const {
     if (!movePosition.isValid()) { return false; }
     int row = getPosition().getRow();
     int column = getPosition().getColumn();
