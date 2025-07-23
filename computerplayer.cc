@@ -4,7 +4,9 @@
 #include <chrono>
 
 ComputerPlayer::ComputerPlayer(const std::string& colour, int difficulty) 
-    : Player{colour}, difficulty{difficulty}, rng{std::chrono::steady_clock::now().time_since_epoch().count()} {}
+    : Player{colour}, difficulty{difficulty},
+        rng{static_cast<std::mt19937::result_type>(
+        std::chrono::steady_clock::now().time_since_epoch().count())} {}
 
 bool ComputerPlayer::isHuman() const {
     return false;

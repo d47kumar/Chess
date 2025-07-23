@@ -16,6 +16,7 @@ class Piece {
 
         // Constructors
         Piece(const std::string colour, Position pos, bool hasMoved);
+        virtual ~Piece() = default;
 
         // Methods
         // Count the number of legal moves
