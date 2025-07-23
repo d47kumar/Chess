@@ -75,7 +75,6 @@ private:
     bool isValidSetup() const;
     void updateGameState();
     void switchPlayer();
-    void updateScores();
     
     // Move validation
     bool isValidMove(const Move& move) const;

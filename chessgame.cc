@@ -36,6 +36,7 @@ bool ChessGame::startGame(const std::string& white, const std::string& black) {
     moveHistory.clear();
     textDisplay->setBoard(board.get());
     if (textDisplay) textDisplay->notify();
+    std::cout << "WHITE's turn." << std::endl;
     // if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
@@ -55,7 +56,7 @@ bool ChessGame::isGameRunning() const {
 // Move handling
 bool ChessGame::move(const std::string& from, const std::string& to, const std::string& promotion) {
     if (!gameRunning || setupMode) return false;
-    std::cout << "Moving piece from " << from << " to " << to << std::endl;
+    std::cout << "Moving piece from " << from << " to " << to << "..." << std::endl;
     Position fromPos = parsePosition(from);
     Position toPos = parsePosition(to);
     if (!fromPos.isValid() || !toPos.isValid()) return false;
@@ -68,9 +69,10 @@ bool ChessGame::move(const std::string& from, const std::string& to, const std::
     if (!isValidMove(move)) return false;
     if (!makeMove(move)) return false;
     moveHistory.push_back(move);
+    if (gameRunning) {
+        switchPlayer();
+    }
     updateGameState();
-    switchPlayer();
-    // if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
 
@@ -82,9 +84,10 @@ bool ChessGame::move() {
     if (!isValidMove(move)) return false;
     if (!makeMove(move)) return false;
     moveHistory.push_back(move);
+    if (gameRunning) { 
+        switchPlayer();
+    }
     updateGameState();
-    switchPlayer();
-    // if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
 
@@ -219,12 +222,14 @@ bool ChessGame::isValidSetup() const {
 
 void ChessGame::updateGameState() {
     if (board->isCheckmate(currentPlayer)) {
+        gameRunning = false;
         gameState = GameState::CHECKMATE;
         if (currentPlayer == "WHITE") blackScore += 1.0;
         else whiteScore += 1.0;
         std::cout << (currentPlayer == "WHITE" ? "Black" : "White") << " wins by checkmate!" << std::endl;
         endGame();
     } else if (board->isStalemate(currentPlayer)) {
+        gameRunning = false;
         gameState = GameState::STALEMATE;
         whiteScore += 0.5;
         blackScore += 0.5;
@@ -233,17 +238,15 @@ void ChessGame::updateGameState() {
     } else if (board->isInCheck(currentPlayer)) {
         gameState = GameState::CHECK;
         std::cout << currentPlayer << " is in check." << std::endl;
-    } else {
-        gameState = GameState::PLAYING;
+        std::cout << currentPlayer << "'s turn." << std::endl;
     }
 }
 
 void ChessGame::switchPlayer() {
     currentPlayer = (currentPlayer == "WHITE") ? "BLACK" : "WHITE";
-}
-
-void ChessGame::updateScores() {
-    // Already handled in updateGameState
+    if (!board->isCheckmate(currentPlayer) && !board->isStalemate(currentPlayer)) {
+        std::cout << currentPlayer << "'s turn." << std::endl;
+    }
 }
 
 bool ChessGame::isValidMove(const Move& move) const {
