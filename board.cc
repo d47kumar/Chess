@@ -44,6 +44,9 @@ std::unique_ptr<Piece> Board::createPiece(char pieceSymbol, Position pos, bool h
 } // Board::createPiece
 
 // Public Methods
+Move Board::getLastMove() const {
+    return lastMove;
+}
 
 Board::Board(bool setup) : whiteKingPos(7, 4), blackKingPos(0, 4), setup{setup}, 
                            lastMove(Position(-1, -1), Position(-1, -1)) {
@@ -280,13 +283,29 @@ bool Board::makeMove(Move move) {
     std::string colour = piece->getColour();
     
     if (!isValidMove(move.from, move.to, colour)) return false;
+
+    if (!move.getIsEnPassant()) {
+        if (dynamic_cast<Pawn*>(piece) && canEnPassant(move.from, move.to, lastMove)) {
+            move.setIsEnPassant(true);
+        }
+    }
+    
+    if (!move.getIsCastling()) {
+        if (dynamic_cast<King*>(piece) && abs(move.to.getColumn() - move.from.getColumn()) == 2) {
+            Position rookPos = (move.to.getColumn() > move.from.getColumn())
+                               ? Position(move.from.getRow(), 7)
+                               : Position(move.from.getRow(), 0);
+            if (canCastle(move.from, rookPos)) {
+                move.setIsCastling(true); // tag it as castling
+            }
+        }
+    }
     
     lastMove = move;
     
     if (move.isCastling) {
         std::unique_ptr<Piece> king = std::move(squares[move.from]);
         squares.erase(move.from);
-        
         king->setPosition(move.to);
         king->setHasMoved(true);
         squares[move.to] = std::move(king);
@@ -308,9 +327,9 @@ bool Board::makeMove(Move move) {
         
         updateKingPosition(colour, move.to);
     } else if (move.isEnPassant) {
-        Position capturedPawnPos(move.from.getRow(), move.to.getColumn());
-        squares.erase(capturedPawnPos);
-        
+        Position capturedPawnPos = lastMove.getTo();
+        Position temp{capturedPawnPos.getRow() + 1, capturedPawnPos.getColumn()};
+        squares.erase(temp);
         std::unique_ptr<Piece> pawn = std::move(squares[move.from]);
         squares.erase(move.from);
         pawn->setPosition(move.to);

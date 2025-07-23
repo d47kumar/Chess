@@ -26,9 +26,18 @@ bool Pawn::isValidMove(Position movePosition, Board *board) const {
     // capture logic
     if (abs(newColumn - column) == 1 && newRow == row + direction) {
         Piece* target = board->getPiece(movePosition);
-        return target != nullptr && target->getColour() != getColour();
-    }
-    // TODO: en passant logic andf promotion piece check 
+
+        // Normal capture
+        if (target != nullptr && target->getColour() != getColour()) {
+            return true;
+        }
+
+        // EN PASSAAAAANTTT
+        Move lastMove = board->getLastMove();  // You already store this
+        if (board->canEnPassant(getPosition(), movePosition, lastMove)) {
+            return true;
+        }
+    } 
     return false;
 } // Pawn::isValidMove
 

@@ -46,6 +46,7 @@ class Board : public Subject {
         Board& operator=(const Board& other); // Copy assignment
         
         // Existing methods
+        Move getLastMove() const;
         Piece* getPiece(Position pos) const; 
         void setPiece(Position pos, std::unique_ptr<Piece> piece); 
         void removePiece(Position pos);
