@@ -13,6 +13,7 @@ bool King::isValidMove(Position movePosition, Board *board) const {
     int rowDiff = abs(newRow - row);
     int columnDiff = abs(newColumn - column);
 
+    // king moves only one square
     if (rowDiff <= 1 && columnDiff <= 1 && (rowDiff != 0 || columnDiff != 0)) {
         Piece* destPiece = board->getPiece(movePosition);
         if (destPiece && destPiece->getColour() == getColour()) {
@@ -20,6 +21,13 @@ bool King::isValidMove(Position movePosition, Board *board) const {
         }
         return true;
     }
+    // checks for castling conditions
+    if (rowDiff == 0 && columnDiff == 2 && !getHasMoved()) {
+        Position rookPos = (newColumn > column) ? Position(row, 7) : Position(row, 0);
+        return board->canCastle(getPosition(), rookPos);
+    }
+
+    return false;
 
     return false;
 } // King::isValidMove
