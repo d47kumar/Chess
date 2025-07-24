@@ -338,9 +338,18 @@ bool Board::makeMove(Move move) {
     } else {
         std::unique_ptr<Piece> movingPiece = std::move(squares[move.from]);
         squares.erase(move.from);
-        
-        if (move.isPromotion) {
-            movingPiece = createPiece(move.promotionPiece[0], move.to, true);
+        if (dynamic_cast<Pawn*>(movingPiece.get())) {
+            int lastRank = (movingPiece->getColour() == "WHITE") ? 0 : 7;
+            if (move.to.getRow() == lastRank) {
+                char promoChar = (movingPiece->getColour() == "WHITE") ? 'Q' : 'q';
+                if (move.isPromotion && !move.promotionPiece.empty()) {
+                    promoChar = move.promotionPiece[0];
+                }
+                movingPiece = createPiece(promoChar, move.to, true);
+            } else {
+                movingPiece->setPosition(move.to);
+                movingPiece->setHasMoved(true);
+            }
         } else {
             movingPiece->setPosition(move.to);
             movingPiece->setHasMoved(true);

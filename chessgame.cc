@@ -28,16 +28,19 @@ bool ChessGame::startGame(const std::string& white, const std::string& black) {
     blackPlayer = createPlayer(black, "BLACK");
     if (!whitePlayer || !blackPlayer) return false;
     std::cout << "Game started!" << std::endl;
-    board = std::make_unique<Board>(false);
+
+    if (!setupMode) {
+        board = std::make_unique<Board>(false);
+        textDisplay->setBoard(board.get());
+        if (textDisplay) textDisplay->notify();
+    }
+
     currentPlayer = "WHITE";
     gameState = GameState::PLAYING;
     gameRunning = true;
     setupMode = false;
     moveHistory.clear();
-    textDisplay->setBoard(board.get());
-    if (textDisplay) textDisplay->notify();
-    std::cout << "WHITE's turn." << std::endl;
-    // if (graphicalDisplay) graphicalDisplay->notify();
+    std::cout << currentPlayer << "'s turn." << std::endl;
     return true;
 }
 
@@ -96,10 +99,10 @@ void ChessGame::resign() {
     gameState = GameState::RESIGNED;
     if (currentPlayer == "WHITE") {
         blackScore += 1.0;
-        std::cout << "Black wins by resignation!" << std::endl;
+        std::cout << "Black wins!" << std::endl;
     } else {
         whiteScore += 1.0;
-        std::cout << "White wins by resignation!" << std::endl;
+        std::cout << "White wins!" << std::endl;
     }
     endGame();
 }
@@ -226,7 +229,7 @@ void ChessGame::updateGameState() {
         gameState = GameState::CHECKMATE;
         if (currentPlayer == "WHITE") blackScore += 1.0;
         else whiteScore += 1.0;
-        std::cout << (currentPlayer == "WHITE" ? "Black" : "White") << " wins by checkmate!" << std::endl;
+        std::cout << "Checkmate! " << (currentPlayer == "WHITE" ? "Black" : "White") << " wins!" << std::endl;
         endGame();
     } else if (board->isStalemate(currentPlayer)) {
         gameRunning = false;

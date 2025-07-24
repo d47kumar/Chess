@@ -66,13 +66,15 @@ public:
     // Game state
     GameState getGameState() const;
     std::string getCurrentPlayer() const;
-    void printFinalScores() const;
+    void printFinalScores() const;  
+
+    // Helper methods
+    bool isValidSetup() const;
     
 private:
     // Helper methods
     std::unique_ptr<Player> createPlayer(const std::string& playerType, const std::string& colour);
     Position parsePosition(const std::string& pos) const;
-    bool isValidSetup() const;
     void updateGameState();
     void switchPlayer();
     
