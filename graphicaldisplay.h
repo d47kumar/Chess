@@ -22,7 +22,7 @@ public:
 
 private:
     int getColour(int row, int col) const; 
-    char getPieceSymbol(Piece* piece) const;
+    std::string getPieceSymbol(Piece* piece) const;
 };
 
 #endif

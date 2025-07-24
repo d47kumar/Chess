@@ -15,7 +15,7 @@ class Xwindow {
   Xwindow(int width=500, int height=500);  
   ~Xwindow();                            
 
-  enum {White=0, Black, Red, Green, Blue}; 
+  enum {White=0, Black, Red, LightGreen, Blue}; 
 
   int getWidth() const;
   int getHeight() const;
@@ -25,6 +25,8 @@ class Xwindow {
 
   // Draws a string
   void drawString(int x, int y, std::string msg);
+  //flush
+  void flush();
 
 };
 

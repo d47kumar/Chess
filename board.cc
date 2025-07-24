@@ -366,10 +366,10 @@ bool Board::makeMove(Move move) {
         
         squares[move.to] = std::move(movingPiece);
     }
-    
     notifyObservers();
-    
     return true;
+
+
 } // Board::makeMove
 
 void Board::clearBoard() {
@@ -412,6 +412,7 @@ void Board::setupStandardPosition() {
     
     whiteKingPos = Position(7, 4);
     blackKingPos = Position(0, 4);
+    notifyObservers();
 } // Board::setupStandardPosition
 
 bool Board::isValidSetup() const {

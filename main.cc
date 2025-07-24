@@ -10,28 +10,29 @@ using namespace std;
 int main() {
     ChessGame chessGame;
 
-    std::unique_ptr<TextDisplay> textDisplay = std::make_unique<TextDisplay>();
+    unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
     chessGame.attachDisplay(textDisplay.get());
 
-    // std::unique_ptr<GraphicalDisplay> graphicsDisplay = std::make_unique<GraphicalDisplay>();
-    // chessGame.attachDisplay(graphicsDisplay.get());
+    unique_ptr<GraphicalDisplay> graphicsDisplay = make_unique<GraphicalDisplay>();
+    chessGame.attachDisplay(graphicsDisplay.get());
 
-    std::string input;
+
+    string input;
     bool running = true;
 
-    while (running && std::cin) {
-        std::cout << "chess> ";
-        if (!(std::getline(std::cin, input))) break;
+    while (running && cin) {
+        cout << "chess> ";
+        if (!(getline(cin, input))) break;
 
-        std::istringstream iss{input};
-        std::string command;
+        istringstream iss{input};
+        string command;
         iss >> command;
 
         if (command == "game") {
-            std::string white, black;
+            string white, black;
             iss >> white >> black;
             if (!chessGame.startGame(white, black)) {
-                std::cout << "Invalid player specification." << std::endl;
+                cout << "Invalid player specification." << endl;
             }
         }
 
@@ -128,7 +129,7 @@ int main() {
         }
 
         else {
-            std::cout << "Unknown command." << std::endl;
+            cout << "Unknown command." << endl;
         }
     }
 
