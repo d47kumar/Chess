@@ -31,7 +31,7 @@ Xwindow::Xwindow(int width, int height) : width{width}, height{height} {
   // Set up colours.
   XColor xcolour;
   Colormap cmap;
-  char color_vals[5][10]={"white", "black", "red", "green", "blue"};
+  char color_vals[5][20]={"white", "black", "red", "light green", "blue",};
 
   cmap=DefaultColormap(d,DefaultScreen(d));
   for(int i=0; i < 5; ++i) {
@@ -70,5 +70,9 @@ void Xwindow::fillRectangle(int x, int y, int width, int height, int colour) {
 
 void Xwindow::drawString(int x, int y, string msg) {
   XDrawString(d, w, DefaultGC(d, s), x, y, msg.c_str(), msg.length());
+}
+
+void Xwindow::flush() {
+  XFlush(d);
 }
 

@@ -9,7 +9,7 @@ ChessGame::ChessGame()
       whitePlayer(nullptr),
       blackPlayer(nullptr),
       textDisplay(nullptr),
-      // graphicalDisplay(nullptr),
+      graphicalDisplay(nullptr),
       currentPlayer("WHITE"),
       gameState(GameState::NOT_STARTED),
       gameRunning(false),
@@ -29,6 +29,16 @@ bool ChessGame::startGame(const std::string& white, const std::string& black) {
     if (!whitePlayer || !blackPlayer) return false;
     std::cout << "Game started!" << std::endl;
     board = std::make_unique<Board>(false);
+
+    if (textDisplay) {
+        textDisplay->setBoard(board.get());
+        board->attach(textDisplay.get());
+    }
+    if (graphicalDisplay) {
+        graphicalDisplay->setBoard(board.get());
+        board->attach(graphicalDisplay.get());
+    }
+    
     currentPlayer = "WHITE";
     gameState = GameState::PLAYING;
     gameRunning = true;
@@ -37,7 +47,7 @@ bool ChessGame::startGame(const std::string& white, const std::string& black) {
     textDisplay->setBoard(board.get());
     if (textDisplay) textDisplay->notify();
     std::cout << "WHITE's turn." << std::endl;
-    // if (graphicalDisplay) graphicalDisplay->notify();
+    if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
 
@@ -111,7 +121,7 @@ void ChessGame::enterSetupMode() {
     board = std::make_unique<Board>(true);
     textDisplay->setBoard(board.get());
     if (textDisplay) textDisplay->notify();
-    // if (graphicalDisplay) graphicalDisplay->notify();
+    if (graphicalDisplay) graphicalDisplay->notify();
 }
 
 void ChessGame::exitSetupMode() {
@@ -133,7 +143,7 @@ bool ChessGame::addPiece(const std::string& piece, const std::string& position) 
     std::unique_ptr<Piece> newPiece = board->createPiece(symbol, pos, false);
     if (!newPiece) return false;
     board->setPiece(pos, std::move(newPiece));
-    // if (graphicalDisplay) graphicalDisplay->notify();
+    if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
 
@@ -142,7 +152,7 @@ bool ChessGame::removePiece(const std::string& position) {
     Position pos = parsePosition(position);
     if (!pos.isValid()) return false;
     board->removePiece(pos);
-    // if (graphicalDisplay) graphicalDisplay->notify();
+    if (graphicalDisplay) graphicalDisplay->notify();
     return true;
 }
 
@@ -162,8 +172,9 @@ void ChessGame::attachDisplay(TextDisplay* display) {
 }
 
 void ChessGame::attachDisplay(GraphicalDisplay* display) {
-    // graphicalDisplay.reset(display);
-    // if (graphicalDisplay) graphicalDisplay->notify();
+    graphicalDisplay.reset(display);               // Store ownership 
+    board->attach(display);                        // Attach as observer
+    display->setBoard(board.get());    
 }
 
 // Game state

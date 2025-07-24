@@ -10,39 +10,40 @@ using namespace std;
 int main() {
     ChessGame chessGame;
 
-    std::unique_ptr<TextDisplay> textDisplay = std::make_unique<TextDisplay>();
+    unique_ptr<TextDisplay> textDisplay = make_unique<TextDisplay>();
     chessGame.attachDisplay(textDisplay.get());
 
-    // std::unique_ptr<GraphicalDisplay> graphicsDisplay = std::make_unique<GraphicalDisplay>();
-    // chessGame.attachDisplay(graphicsDisplay.get());
+    unique_ptr<GraphicalDisplay> graphicsDisplay = make_unique<GraphicalDisplay>();
+    chessGame.attachDisplay(graphicsDisplay.get());
 
-    std::string input;
+
+    string input;
     bool running = true;
 
-    while (running && std::cin) {
-        std::cout << "chess> ";
-        if (!(std::getline(std::cin, input))) break;
+    while (running && cin) {
+        cout << "chess> ";
+        if (!(getline(cin, input))) break;
 
-        std::istringstream iss{input};
-        std::string command;
+        istringstream iss{input};
+        string command;
         iss >> command;
 
         if (command == "game") {
-            std::string white, black;
+            string white, black;
             iss >> white >> black;
             if (!chessGame.startGame(white, black)) {
-                std::cout << "Invalid player specification." << std::endl;
+                cout << "Invalid player specification." << endl;
             }
         }
 
         else if (command == "move") {
-            std::string from, to, promo;
+            string from, to, promo;
             iss >> from >> to >> promo;
             if (!chessGame.isGameRunning()) {
-                std::cout << "No active game. Use 'game' to start." << std::endl;
+                cout << "No active game. Use 'game' to start." << endl;
             } else {
                 bool success = chessGame.move(from, to, promo);
-                if (!success) std::cout << "Illegal move." << std::endl;
+                if (!success) cout << "Illegal move." << endl;
             }
         }
 
@@ -59,7 +60,7 @@ int main() {
         }
 
         else {
-            std::cout << "Unknown command." << std::endl;
+            cout << "Unknown command." << endl;
         }
     }
 

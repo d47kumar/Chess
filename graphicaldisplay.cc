@@ -13,6 +13,7 @@ void GraphicalDisplay::setBoard(Board* b) {
 } // GraphicalDisplay::setBoard
 
 void GraphicalDisplay::notify() {
+    std::cout << "graphical display called" << std::endl;
     if (board) {
         drawBoard();
     }
@@ -28,19 +29,20 @@ void GraphicalDisplay::drawBoard() {
             int x = col * squareSize;
             int y = row * squareSize;
 
-            int colour = ((row + col) % 2 == 0) ? Xwindow::White : Xwindow::Black;
+            int colour = ((row + col) % 2 == 0) ? Xwindow::White : Xwindow::LightGreen;
             window->fillRectangle(x, y, squareSize, squareSize, colour);
 
             Piece* piece = board->getPiece(Position(row, col));
             if (piece) {
-                char symbol = getPieceSymbol(piece);
+                std::string symbol = getPieceSymbol(piece);
                 int textX = x + squareSize / 2 - 10;
                 int textY = y + squareSize / 2 + 10;
 
-                window->drawString(textX, textY, std::string(1, symbol));
+                window->drawString(textX, textY, symbol);
             }
         }
     }
+    // ensurinf the screen update happens
 } // GraphicalDisplay::drawBoard
 
 void GraphicalDisplay::drawPiece(char piece, int row, int col) {
@@ -62,17 +64,17 @@ int GraphicalDisplay::getColour(int row, int col) const {
     return ((row + col) % 2 == 0) ? Xwindow::White : Xwindow::Black;
 } // GraphicalDisplay::getColour
 
-char GraphicalDisplay::getPieceSymbol(Piece* piece) const {
-    if (!piece) return ' ';
+std::string GraphicalDisplay::getPieceSymbol(Piece* piece) const {
+    if (!piece) return " ";
 
     bool isWhite = (piece->getColour() == "WHITE");
 
-    if (dynamic_cast<King*>(piece)) return isWhite ? 'K' : 'k';
-    if (dynamic_cast<Queen*>(piece)) return isWhite ? 'Q' : 'q';
-    if (dynamic_cast<Rook*>(piece)) return isWhite ? 'R' : 'r';
-    if (dynamic_cast<Bishop*>(piece)) return isWhite ? 'B' : 'b';
-    if (dynamic_cast<Knight*>(piece)) return isWhite ? 'N' : 'n';
-    if (dynamic_cast<Pawn*>(piece)) return isWhite ? 'P' : 'p';
+    if (dynamic_cast<King*>(piece))   return isWhite ? "K" : "k";
+    if (dynamic_cast<Queen*>(piece))  return isWhite ? "Q" : "q";
+    if (dynamic_cast<Rook*>(piece))   return isWhite ? "R" : "r";
+    if (dynamic_cast<Bishop*>(piece)) return isWhite ? "B" : "b";
+    if (dynamic_cast<Knight*>(piece)) return isWhite ? "N" : "n";
+    if (dynamic_cast<Pawn*>(piece))   return isWhite ? "P" : "p";
 
-    return '?';
+    return "?";
 } // GraphicalDisplay::getPieceSymbol
