@@ -240,8 +240,11 @@ void ChessGame::updateGameState() {
         endGame();
     } else if (board->isInCheck(currentPlayer)) {
         gameState = GameState::CHECK;
-        std::cout << currentPlayer << " is in check." << std::endl;
-        std::cout << currentPlayer << "'s turn." << std::endl;
+        if (currentPlayer == "WHITE") {
+            std::cout << "White is in check!" << std::endl;
+        } else {
+            std::cout << "Black is in check!" << std::endl;
+        }
     }
 }
 
