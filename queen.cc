@@ -12,12 +12,10 @@ bool Queen::isValidMove(Position movePosition, Board *board) const {
     int rowDiff = abs(newRow - row);
     int columnDiff = abs(newColumn - column);
 
-    // Not a queen move
     if (!(row == newRow || column == newColumn || rowDiff == columnDiff)) {
         return false;
     }
 
-    // Check for blocking pieces
     int dRow = (newRow - row) == 0 ? 0 : (newRow - row) / abs(newRow - row);
     int dCol = (newColumn - column) == 0 ? 0 : (newColumn - column) / abs(newColumn - column);
     int steps = std::max(rowDiff, columnDiff);

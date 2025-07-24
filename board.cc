@@ -328,7 +328,12 @@ bool Board::makeMove(Move move) {
         updateKingPosition(colour, move.to);
     } else if (move.isEnPassant) {
         Position capturedPawnPos = lastMove.getTo();
-        Position temp{capturedPawnPos.getRow() + 1, capturedPawnPos.getColumn()};
+        Position temp;
+        if (getPiece(capturedPawnPos)->getColour() == "WHITE") {
+            Position temp{capturedPawnPos.getRow() + 1, capturedPawnPos.getColumn()};
+        } else {
+            Position temp{capturedPawnPos.getRow() - 1, capturedPawnPos.getColumn()};
+        }
         squares.erase(temp);
         std::unique_ptr<Piece> pawn = std::move(squares[move.from]);
         squares.erase(move.from);
@@ -477,7 +482,7 @@ std::ostream& operator<<(std::ostream& out, const Board& board) {
         }
         out << std::endl;
     }
-    
+    out << std::endl; 
     out << "  abcdefgh" << std::endl;
     return out;
 } // ostream& operator<<

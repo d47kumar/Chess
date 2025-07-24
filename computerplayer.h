@@ -1,23 +1,23 @@
 #ifndef COMPUTERPLAYER_H
 #define COMPUTERPLAYER_H
 #include "player.h"
+#include "PRNG.h"
 #include <vector>
-#include <random>
 
 class ComputerPlayer : public Player {
-protected:
-    std::mt19937 rng;
+    PRNG prng;
     int difficulty;
 
 public:
-    ComputerPlayer(const std::string& colour, int difficulty);
+    ComputerPlayer(const std::string& colour, int difficulty, uint32_t seed = 362436069);
     bool isHuman() const override;
     Move makeMove(Board* board) override;
 
-protected:
-    virtual Move selectBestMove(const std::vector<Move>& legalMoves, Board* board);
-    virtual int evaluateMove(const Move& move, Board* board);
-    virtual int evaluatePosition(Board* board);
+private:
+    Move selectRandomMove(const std::vector<Move>& legalMoves);
+    Move selectCaptureOrCheckMove(const std::vector<Move>& legalMoves, Board* board);
+    Move selectSafeCaptureOrCheckMove(const std::vector<Move>& legalMoves, Board* board);
+    std::string opponentColour() const;
 };
 
 #endif

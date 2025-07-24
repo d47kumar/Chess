@@ -12,12 +12,10 @@ bool Bishop::isValidMove(Position movePosition, Board *board) const {
     int rowDiff = abs(newRow - row);
     int columnDiff = abs(newColumn - column);
 
-    // Not a bishop move or no move at all
     if (rowDiff != columnDiff || rowDiff == 0) {
         return false;
     }
-
-    // Check for blocking pieces
+    
     int dRow = (newRow - row) / rowDiff;
     int dCol = (newColumn - column) / columnDiff;
     for (int i = 1; i < rowDiff; ++i) {

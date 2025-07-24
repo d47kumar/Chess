@@ -201,10 +201,6 @@ std::unique_ptr<Player> ChessGame::createPlayer(const std::string& playerType, c
     if (playerType == "computer[3]") {
         return std::make_unique<ComputerPlayer>(colour, 3);
     }
-
-    if (playerType == "computer[4]") {
-        return std::make_unique<ComputerPlayer>(colour, 4);
-    }
     
     return nullptr;
 }

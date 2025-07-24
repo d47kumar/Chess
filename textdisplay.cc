@@ -26,7 +26,6 @@ void TextDisplay::printBoard() const {
 
     std::cout << "Drawing Board..." << std::endl;
 
-    // Print board from rank 8 to rank 1
     for (int row = 0; row < 8; ++row) {
         std::cout << (8 - row) << " ";
 
@@ -37,7 +36,7 @@ void TextDisplay::printBoard() const {
         std::cout << std::endl;
     }
 
-    // Print file letters
+    std::cout << "  " << std::endl;
     std::cout << "  abcdefgh" << std::endl;
 }
 

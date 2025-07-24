@@ -36,13 +36,34 @@ int main() {
         }
 
         else if (command == "move") {
-            std::string from, to, promo;
-            iss >> from >> to >> promo;
             if (!chessGame.isGameRunning()) {
                 std::cout << "No active game. Use 'game' to start." << std::endl;
             } else {
-                bool success = chessGame.move(from, to, promo);
-                if (!success) std::cout << "Illegal move." << std::endl;
+                std::string currentPlayer = chessGame.getCurrentPlayer();
+                Player* player = nullptr;
+                if (currentPlayer == "WHITE") {
+                    player = chessGame.getWhitePlayer();
+                } else {
+                    player = chessGame.getBlackPlayer();
+                }
+
+                std::string from, to, promo;
+                iss >> from >> to >> promo;
+
+                if (player && !player->isHuman()) {
+                    if (!from.empty()) {
+                        std::cout << "Just type 'move' for computer's turn." << std::endl;
+                    } else {
+                        bool success = chessGame.move();
+                        if (!success) std::cout << "Illegal move." << std::endl;
+                    }
+                } else {
+                    if (from.empty() || to.empty()) {
+                        std::cout << "Usage: move <from> <to> [promotion]" << std::endl;
+                    } else {
+                        bool success = chessGame.move(from, to, promo);
+                    }
+                }
             }
         }
 

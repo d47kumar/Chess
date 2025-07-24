@@ -70,6 +70,10 @@ public:
 
     // Helper methods
     bool isValidSetup() const;
+
+    // Player accessors
+    Player* getWhitePlayer() const { return whitePlayer.get(); }
+    Player* getBlackPlayer() const { return blackPlayer.get(); }
     
 private:
     // Helper methods
