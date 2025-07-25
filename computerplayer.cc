@@ -15,15 +15,14 @@ Move ComputerPlayer::makeMove(Board* board) {
         return Move(Position(-1, -1), Position(-1, -1));
     }
 
-    switch (difficulty) {
-        case 1:
-            return selectRandomMove(legalMoves);
-        case 2:
-            return selectCaptureOrCheckMove(legalMoves, board);
-        case 3:
-            return selectSafeCaptureOrCheckMove(legalMoves, board);
-        default:
-            return selectRandomMove(legalMoves);
+    if (difficulty == 1) {
+        return selectRandomMove(legalMoves);
+    } else if (difficulty == 2) {
+        return selectCaptureOrCheckMove(legalMoves, board);
+    } else if (difficulty == 3) {
+        return selectSafeCaptureOrCheckMove(legalMoves, board);
+    } else {
+        return selectRandomMove(legalMoves);
     }
 }
 
