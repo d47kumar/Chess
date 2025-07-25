@@ -178,6 +178,21 @@ bool Board::isStalemate(const std::string& colour) const {
     return legalMoves.empty();
 } // Board::isStalemate
 
+bool Board::isDraw() const {
+    int pieceCount = 0;
+    int kingCount = 0;
+    for (const auto& [pos, piecePtr] : squares) {
+        if (piecePtr) {
+            ++pieceCount;
+            if (dynamic_cast<King*>(piecePtr.get())) {
+                ++kingCount;
+            }
+        }
+    }
+    
+    return (pieceCount == 2 && kingCount == 2);
+} // Board::isDraw
+
 std::vector<Move> Board::getLegalMoves(const std::string& colour) const {
     std::vector<Move> legalMoves;
     
@@ -327,14 +342,10 @@ bool Board::makeMove(Move move) {
         
         updateKingPosition(colour, move.to);
     } else if (move.isEnPassant) {
-        Position capturedPawnPos = lastMove.getTo();
-        Position temp;
-        if (getPiece(capturedPawnPos)->getColour() == "WHITE") {
-            Position temp{capturedPawnPos.getRow() + 1, capturedPawnPos.getColumn()};
-        } else {
-            Position temp{capturedPawnPos.getRow() - 1, capturedPawnPos.getColumn()};
-        }
-        squares.erase(temp);
+        int direction = (getPiece(move.from)->getColour() == "WHITE") ? 1 : -1;
+        Position capturedPawnPos(move.to.getRow() + direction, move.to.getColumn());
+
+        squares.erase(capturedPawnPos);
         std::unique_ptr<Piece> pawn = std::move(squares[move.from]);
         squares.erase(move.from);
         pawn->setPosition(move.to);

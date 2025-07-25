@@ -16,7 +16,8 @@ enum class GameState {
     CHECK,
     CHECKMATE,
     STALEMATE,
-    RESIGNED
+    RESIGNED,
+    DRAW
 };
 
 class ChessGame {

@@ -244,6 +244,13 @@ void ChessGame::updateGameState() {
         blackScore += 0.5;
         std::cout << "Stalemate!" << std::endl;
         endGame();
+    } else if (board->isDraw()) {
+        gameRunning = false;
+        gameState = GameState::DRAW;
+        whiteScore += 0.5;
+        blackScore += 0.5;
+        std::cout << "Draw!" << std::endl;
+        endGame();
     } else if (board->isInCheck(currentPlayer)) {
         gameState = GameState::CHECK;
         if (currentPlayer == "WHITE") {

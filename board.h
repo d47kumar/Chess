@@ -59,6 +59,7 @@ class Board : public Subject {
         bool isInCheck(const std::string& colour) const;
         bool isCheckmate(const std::string& colour) const;
         bool isStalemate(const std::string& colour) const;
+        bool isDraw() const;
         std::vector<Move> getLegalMoves(const std::string& colour) const;
         
         // Special moves

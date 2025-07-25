@@ -63,6 +63,7 @@ int main() {
                         std::cout << "Usage: move <from> <to> [promotion]" << std::endl;
                     } else {
                         bool success = chessGame.move(from, to, promo);
+                        if (!success) std::cout << "Illegal move." << std::endl;
                     }
                 }
             }
